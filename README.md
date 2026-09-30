@@ -1,35 +1,58 @@
-# mushroom_hunt
+# 🍄 Тихая Охота
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+> Мобильная игра про сделку с лешим: та же формула напряжения, что в Buckshot Roulette, но вместо дробовика — корзина грибов.
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
+Студенческий проект. Работа началась 01.10.2026.
 
-## Platforms
+## Логлайн
 
-- `core`: Main module with the application logic shared by all platforms.
-- `lwjgl3`: Primary desktop platform using LWJGL3; was called 'desktop' in older docs.
-- `android`: Android mobile platform. Needs Android SDK.
+Ты заблудился в ночном лесу и наткнулся на костёр. Хозяин костра — леший — предлагает сделку: сыграй в его игру, и он покажет дорогу. На пень высыпается корзина грибов. Часть из них съедобные. Часть — нет.
 
-## Gradle
+## Ядро геймплея
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
+- Леший высыпает N грибов и честно объявляет состав: «Шесть грибов: три белых, две поганки, один мухомор»
+- **Съесть гриб самому** → если съедобный, ход остаётся у тебя (жадность вознаграждается)
+- **Пододвинуть лешему** → если ядовитый, он теряет здоровье, ход переходит к нему
+- Мухомор = −2 сердца, поганка = −1 сердце. У обоих по 3–5 сердец на раунд
 
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `android:lint`: performs Android project validation.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `lwjgl3:jar`: builds application's runnable jar, which can be found at `lwjgl3/build/libs`.
-- `lwjgl3:run`: starts the application.
-- `test`: runs unit tests (if any).
+Ключевое отличие от референса: исходов не два, а три-четыре. Математика вероятностей становится интереснее — игрок в уме считает комбинаторику, а не просто «бой/холостой».
 
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+## Уникальные механики
+
+**Галлюцинации.** Ложный сморчок выглядит как съедобный, но после него интерфейс начинает врать — метки грибов на экране показывают неправильные типы 2 хода. Игрок должен помнить, чему верить нельзя.
+
+**Леший мухлюет.** На поздних уровнях экран периодически «мигает» темнотой (как моргание) — и гриб на пне может оказаться подменён.
+
+**Нож.** Разрезаешь гриб пополам: узнаёшь его тип, но съедаешь половину эффекта. Знание в обмен на урон.
+
+## Предметы
+
+По 2–3 слота перед раундом:
+
+- **Соль** — круг из соли: леший пропускает ход (раз за раунд)
+- **Синичка** — скормить ей гриб: он исчезает из игры без эффекта
+- **Фляга молока** — снять галлюцинацию / +1 сердце
+- **Лупа** — подсмотреть, что прячется под шляпкой
+
+## Структура
+
+Вместо «этажей» — глубина леса: дальше от костра встречаешь новых хозяев:
+
+- **Кикимора** — подменяет грибы
+- **Водяной** — грибы «тонут», их не видно пару ходов
+- Финальный босс — сам **Леший**
+- Плюс бесконечный режим с сидом и ежедневный забег с фикс. корзиной для таблицы лидеров
+
+## Мобильные решения
+
+- Вертикальный экран, всё управление тапами, сессия 3–5 минут
+- Вибрация при укусе мухомора, звук сердца и потрескивание костра
+- Визуал — силуэты на тёплом свете костра, вайб «Ёжика в тумане» и советских мульт-страшилок
+
+## Монетизация
+
+Премиум без рекламы + косметика (корзины, костры, шляпы грибника).
+
+---
+
+*Репозиторий: `mushroom_hunt` (рабочее название), игра: «Тихая Охота».*
