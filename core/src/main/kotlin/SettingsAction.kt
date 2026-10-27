@@ -7,6 +7,6 @@ class SettingsAction(private val game: Main, private val stage: Stage) : MenuAct
 
     override fun run() {
         // ЗАДАЧА: экран настроек — звук, музыка, язык. Пока — заглушка.
-        stage.addActor(InfoPopup("SETTINGS — IN DEVELOPMENT", game.skin))
+        stage.addActor(SettingsPopup(game.skin))
     }
 }
