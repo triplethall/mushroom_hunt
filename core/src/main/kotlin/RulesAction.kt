@@ -7,6 +7,6 @@ class RulesAction(private val game: Main, private val stage: Stage) : MenuAction
 
     override fun run() {
         // ЗАДАЧА: здесь будет экран правил (список, скролл, картинки). Пока — заглушка.
-        stage.addActor(InfoPopup("RULES — IN DEVELOPMENT", game.skin))
+        stage.addActor(RulesPopup(game.skin))
     }
 }
