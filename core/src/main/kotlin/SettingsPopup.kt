@@ -18,11 +18,17 @@ class SettingsPopup(skin: Skin) : Table() {
 
 // Переключатель (чекбокс): включён/выключен. Сам ничего не делает — просто тумблер.
         val chkMute = CheckBox("  " + Localization["settings.mute"], skin)
+// Начальное состояние — из сохранённых настроек (первый запуск → дефолт).
+// Выставляем ДО навешивания слушателя ниже: программная установка тоже
+// может стрельнуть ChangeEvent (записал бы то же значение — безвредно, но незачем).
+        chkMute.isChecked = GameSettings.mute
 // Ползунок громкости: Slider(мин, макс, шаг, вертикальный?, скин)
         val sldVolume = Slider(0f, 100f, 1f, false, skin)
-        sldVolume.value = 70f // начальное положение ползунка
+// Начальное положение ползунка — сохранённая громкость (первый запуск → 70)
+        sldVolume.value = GameSettings.volume
 // Переключатель вибрации (для телефонов)
         val chkVibration = CheckBox("  " + Localization["settings.vibration"], skin)
+        chkVibration.isChecked = GameSettings.vibration // так же, как mute
 
 // --- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА (живой, не декорация) ----------------------
 // SelectBox — выпадающий список. Пункты берём из Localization.SUPPORTED_LANGUAGES
@@ -47,6 +53,30 @@ class SettingsPopup(skin: Skin) : Table() {
                 val st = stage          // сцена, на которой мы висим
                 remove()                // уходим со сцены (старый попап умирает)
                 st.addActor(SettingsPopup(skin)) // и тут же рождаемся заново
+            }
+        })
+// --------------------------------------------------------------------
+
+// --- СЛУШАТЕЛИ ГРОМКОСТИ И ТУМБЛЕРОВ (живые, не декорация) ----------
+// Приём тот же, что у переключателя языка выше: ChangeEvent стреляет,
+// когда пользователь трогает контрол. Мы пересылаем новое значение
+// в GameSettings — setter внутри сам запишет его в Preferences и
+// сделает flush(). Настройки переживают перезапуск игры.
+// Аудиомодуля в игре пока нет: когда появится, он будет просто читать
+// GameSettings.volume, не зная про этот код.
+        sldVolume.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                GameSettings.volume = sldVolume.value // ползунок дёрнули → сохранить
+            }
+        })
+        chkMute.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                GameSettings.mute = chkMute.isChecked // тумблер щёлкнули → сохранить
+            }
+        })
+        chkVibration.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                GameSettings.vibration = chkVibration.isChecked // аналогично
             }
         })
 // --------------------------------------------------------------------

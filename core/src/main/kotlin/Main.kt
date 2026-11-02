@@ -42,6 +42,11 @@ class Main : Game() {
         // Порядок важен: сначала словарь, потом экраны, которые из него читают.
         Localization.load()
 
+        // НАСТРОЙКИ: громкость/mute/вибрация живут в Preferences (тот же файл,
+        // что и язык). Грузим до экранов — SettingsPopup при открытии покажет
+        // сохранённые значения, а не дефолты.
+        GameSettings.load()
+
         // Gdx.files.internal(...) — файл из папки ассетов (android/assets/).
         skin = Skin(Gdx.files.internal("ui/uiskin.json"))
 
